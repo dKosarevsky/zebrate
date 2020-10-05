@@ -12,3 +12,5 @@ made with:
 * [and this dataset](http://mng.bz/8pKP)
 
 by [Dmitry Kosarevsky](https://github.com/dKosarevsky) for [TaDS labs](https://networking-labs.ru/) in [BMSTU](https://bmstu.ru)
+
+How it's [work on Heroku](https://zebrate.herokuapp.com/)
