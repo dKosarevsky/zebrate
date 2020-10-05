@@ -11,4 +11,4 @@ made with:
 * [weights for model](https://github.com/deep-learning-with-pytorch/dlwpt-code/blob/master/data/p1ch2/horse2zebra_0.4.0.pth)
 * [and this dataset](http://mng.bz/8pKP)
 
-by [Dmitry Kosarevsky](https://github.com/dKosarevsky)
+by [Dmitry Kosarevsky](https://github.com/dKosarevsky) for [TaDS labs](https://networking-labs.ru/) in [BMSTU](https://bmstu.ru)
