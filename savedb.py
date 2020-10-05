@@ -1,15 +1,18 @@
+import os
 import base64
 import psycopg2
-from pgpass import HOST, PORT, DB, USER, PWD
+# from pgpass import HOST, PORT, DB, USER, PWD
 
 
-db_conn_str = f"postgresql://{USER}:{PWD}@{HOST}:{PORT}/{DB}"
+# db_conn_str = f"postgresql://{USER}:{PWD}@{HOST}:{PORT}/{DB}"
+DATABASE_URL = os.environ['DATABASE_URL']
 
 
 def truncate(table):
     """ truncate temp table """
     try:
-        conn = psycopg2.connect(db_conn_str)
+        # conn = psycopg2.connect(db_conn_str)
+        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
         with conn:
             curs = conn.cursor()
@@ -23,7 +26,8 @@ def truncate(table):
 def save_to_temp_db(image, table, image_name='img'):
     """ insert a BLOB into a temp table """
     try:
-        conn = psycopg2.connect(db_conn_str)
+        # conn = psycopg2.connect(db_conn_str)
+        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
         with conn:
             curs = conn.cursor()
@@ -41,7 +45,8 @@ def save_to_temp_db(image, table, image_name='img'):
 def update_prod_db(table):
     """ update prod table """
     try:
-        conn = psycopg2.connect(db_conn_str)
+        # conn = psycopg2.connect(db_conn_str)
+        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
         with conn:
             curs = conn.cursor()
@@ -70,7 +75,8 @@ def save_img(data, filename):
 def load(table, path_to_dir, img_id, ext=".png"):
     """ read BLOB data from a table """
     try:
-        conn = psycopg2.connect(db_conn_str)
+        # conn = psycopg2.connect(db_conn_str)
+        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
         with conn:
             curs = conn.cursor()
