@@ -1,2 +1,5 @@
 streamlit==0.67.0
 psycopg2==2.8.6
+pytest==6.1.1
+coverage==5.3
+pytest-cov==2.10.1
