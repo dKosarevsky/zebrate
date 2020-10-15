@@ -8,6 +8,7 @@ from torchvision import transforms
 
 from resnet import ResNetGenerator
 from savedb import truncate, save_to_temp_db, update_prod_db
+from urllib.parse import urlparse
 
 from PIL import Image
 from io import BytesIO
@@ -24,18 +25,24 @@ horse_table = "horse_files"
 zebra_table = "zebra_files"
 
 
-def uploader():
-    """function for upload images"""
-    file = st.sidebar.file_uploader("Upload your horse image:", type=FILE_TYPES)
+def uploader(file):
+    """
+    function for upload image from user
+    return file object
+    """
     show_file = st.sidebar.empty()
     if not file:
-        show_file.info("Upload a file of type: " + ", ".join(FILE_TYPES))
-        return
+        show_file.info("valid file extension: " + ", ".join(FILE_TYPES))
+        return False
 
     return file
 
 
 def prepare_model():
+    """
+    function for prepare generative model
+    return model and preprocess
+    """
     netG = ResNetGenerator()
 
     model_path = './horse2zebra_0.4.0.pth'
@@ -51,6 +58,10 @@ def prepare_model():
 
 
 def img_to_bin(im):
+    """
+    function for encode image ti binary
+    return binary object
+    """
     buffered = BytesIO()
     im.save(buffered, format="PNG")
     bin_im = base64.b64encode(buffered.getvalue())
@@ -58,6 +69,10 @@ def img_to_bin(im):
 
 
 def generate_zebra(net_G, preprocess, user_img, user_url, base_url):
+    """
+    function for generate zebra from horse-tensor
+    return image of zebra
+    """
     if user_img:
         img = Image.open(user_img)
     else:
@@ -91,10 +106,24 @@ def generate_zebra(net_G, preprocess, user_img, user_url, base_url):
     return out_img
 
 
+def validate_url(url):
+    try:
+        result = urlparse(url)
+        if all([result.scheme, result.netloc]):
+            return url
+        elif not url:
+            return False
+        else:
+            st.sidebar.markdown("<font color='red'>it doesn't look like a picture link</font>", unsafe_allow_html=True)
+            return False
+    except AttributeError:
+        return False
+
+
 def main():
-    horse_url = st.sidebar.text_input("Put the link to the horse picture here: ")
+    horse_url = validate_url(st.sidebar.text_input("Put the link to the horse picture here: "))
     net, preproc = prepare_model()
-    img_file = uploader()
+    img_file = uploader(st.sidebar.file_uploader("Upload your horse image:", type=FILE_TYPES))
     zebra = generate_zebra(net, preproc, img_file, horse_url, URL)
     img_bin = img_to_bin(zebra)
     truncate(zebra_table)

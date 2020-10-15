@@ -1,11 +1,4 @@
 import torch.nn as nn
-import numpy as np
-
-matrix_a = [
-    [1, 2, 3],
-    [4, 5, 6]
-]
-np.matrix(matrix_a)
 
 
 class ResNetBlock(nn.Module):  # <1>
