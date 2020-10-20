@@ -76,7 +76,7 @@
 | ---- | -------------- | ------------------- | --------------------- |
 | test_url_validator | поочередно все ссылки из переменной GOOD_URLS  | True, url is real | True, url is real |
 | test_url_validator | поочередно все ссылки из переменной BAD_URLS  | False, NOT url | False, NOT url |
-| test_url_validator | пустая строка  | "False, url is absent | "False, url is absent |
+| test_url_validator | пустая строка  | False, url is absent | False, url is absent |
 | test_url_validator | поочередно все числа (floats) из переменной NUMS | False, AttributeError | False, AttributeError |
 | test_url_http | поочередно все ссылки из переменной GOOD_URLS | Is http in the url | Is http in the url |
 | test_url_http | поочередно все ссылки из переменной BAD_URLS | make sure http isn't in url | make sure http isn't in url |
@@ -88,9 +88,9 @@
 <p align="center">
   <img src="001.png"/>
 </p>
-Рисунок 1 — результаты юнит-тестирования модуля `zebrate.py`
+Рисунок 1 — результаты юнит-тестирования модуля `zebrate.py` 
 
-Информация о покрытии тестами:
+##### Информация о покрытии тестами:
 ```
 ----------- coverage: platform linux, python 3.8.5-final-0 -----------
 Name         Stmts   Miss  Cover   Missing
