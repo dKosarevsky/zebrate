@@ -72,11 +72,16 @@
 ### Таблица 1. Модульные тесты для модуля zebrate.py
 | Тест | Входные данные | Ожидаемый результат | Фактический результат |
 | ---- | -------------- | ------------------- | --------------------- |
-| test_url_validator |  |  |  |
-| test_url_http |  |  |  |
-| test_valid_extension |  |  |  |
-| test_invalid_extension |  |  |  |
-| test_uploader |  |  |  |
+| test_url_validator | поочередно все ссылки из переменной GOOD_URLS  | True, url is real | True, url is real |
+| test_url_validator | поочередно все ссылки из переменной BAD_URLS  | False, NOT url | False, NOT url |
+| test_url_validator | пустая строка  | "False, url is absent | "False, url is absent |
+| test_url_validator | поочередно все числа (floats) из переменной NUMS | False, AttributeError | False, AttributeError |
+| test_url_http | поочередно все ссылки из переменной GOOD_URLS | Is http in the url | Is http in the url |
+| test_url_http | поочередно все ссылки из переменной BAD_URLS | make sure http isn't in url | make sure http isn't in url |
+| test_valid_extension | поочередно все ссылки из переменной EXTENSIONS_URLS с подставлением в цикле каждого разрешения из переменной VALID_EXTENSIONS | Is extension in the url | Is extension in the url |
+| test_invalid_extension | поочередно все ссылки из переменной EXTENSIONS_URLS с подставлением в цикле каждого разрешения из переменной INVALID_EXTENSIONS | Is extension NOT in url | Is extension NOT in url |
+| test_uploader | строка с бинарным кодом файла | True, it's a file | True, it's a file |
+| test_uploader | число 0 | False, NOT file | False, NOT file |
 
 Информация о покрытии тестами:
 ```
