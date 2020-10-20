@@ -85,6 +85,8 @@
 | test_uploader | строка с бинарным кодом файла | True, it's a file | True, it's a file |
 | test_uploader | число 0 | False, NOT file | False, NOT file |
 
+Примечание: используемые в тестах переменные заполнены входными данными по не избыточному принципу в соответствии с классами эквивалентности. 
+
 <p align="center">
   <img src="001.png"/>
 </p>
