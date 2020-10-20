@@ -1,4 +1,6 @@
-[<img src="logo.png" width="250"/>](logo.png)
+<p align="center">
+  <img src="logo.png" width="250"/>
+</p>
 
 ### Министерство науки и высшего образования Российской Федерации
 ### Федеральное государственное бюджетное образовательное учреждение высшего образования
@@ -83,7 +85,9 @@
 | test_uploader | строка с бинарным кодом файла | True, it's a file | True, it's a file |
 | test_uploader | число 0 | False, NOT file | False, NOT file |
 
-![Рис. 1](001.png) \
+<p align="center">
+  <img src="001.png"/>
+</p>
 Рисунок 1 — результаты юнит-тестирования модуля `zebrate.py`
 
 Информация о покрытии тестами:
