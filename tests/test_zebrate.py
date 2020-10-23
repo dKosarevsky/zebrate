@@ -105,6 +105,3 @@ def invalid_extension(request):
 @pytest.fixture(params=NUMS)
 def numbers(request):
     yield request.param
-
-
-# TODO Тесты взаимодействия с БД (будут относиться к интеграционным)
