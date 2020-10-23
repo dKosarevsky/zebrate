@@ -20,7 +20,7 @@ def test_truncate_table(db_connection, prod_tables):
     """
         Test truncate temp tables
     """
-    check.is_true(truncate(prod_tables, db_connection))
+    check.is_true(truncate(prod_tables, db_connection), "True, table successfully truncated")
 
 
 def test_truncate_error_table(db_connection, temp_tables):
@@ -34,7 +34,7 @@ def test_save_temp(db_connection, prod_tables, bin_images):
     """
         Test save images to temp tables
     """
-    check.is_true(save_to_temp_db(bin_images, prod_tables, db_connection))
+    check.is_true(save_to_temp_db(bin_images, prod_tables, db_connection), "True, image saved to temp table")
 
 
 def test_error_save_temp(db_connection, prod_tables, temp_tables, numbers, bin_images):
@@ -49,7 +49,7 @@ def test_update_prod(db_connection, prod_tables):
     """
         Test save images to prod tables
     """
-    check.is_true(update_prod_db(prod_tables, db_connection))
+    check.is_true(update_prod_db(prod_tables, db_connection), "True, image saved to prod table")
 
 
 def test_error_update_prod(db_connection, temp_tables):
