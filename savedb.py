@@ -1,6 +1,5 @@
-import os
-import base64
 import psycopg2
+import os
 
 DATABASE_URL = os.environ['DATABASE_URL']
 
@@ -12,6 +11,7 @@ def connect_to_db(db_url=DATABASE_URL):
         return conn
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
+        return False
 
 
 def truncate(table, conn):
@@ -20,6 +20,8 @@ def truncate(table, conn):
         with conn:
             curs = conn.cursor()
             curs.execute(f"TRUNCATE TABLE {table}_temp")
+        print(f"table {table}_temp successfully truncated")
+        return True
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
         return False
@@ -35,6 +37,8 @@ def save_to_temp_db(image, table, conn, image_name='img'):
                 VALUES ('img', {psycopg2.Binary(image)})
             """)
             conn.commit()
+        print(f"image successfully saved to table {table}_temp")
+        return True
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
         return False
@@ -56,33 +60,35 @@ def update_prod_db(table, conn):
                     )
             """)
             conn.commit()
+        print(f"image successfully saved to table {table}")
+        return True
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
         return False
 
 
-def save_img(data, filename):
-    with open(filename, "wb") as fh:
-        fh.write(base64.decodebytes(data))
-
-
-def load(table, path_to_dir, img_id, conn, ext=".png"):
-    """ read BLOB data from a table """
-    try:
-        with conn:
-            curs = conn.cursor()
-            curs.execute(f"""
-                SELECT orig_filename, file_data
-                FROM {table}
-                WHERE id = {img_id}
-            """)
-
-            blob = curs.fetchone()
-            print(path_to_dir + ext)
-            save_img(blob[1], path_to_dir + blob[0] + ext)
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-        return False
+# def save_img(data, filename):
+#     with open(filename, "wb") as fh:
+#         fh.write(base64.decodebytes(data))
+#
+#
+# def load(table, path_to_dir, img_id, conn, ext=".png"):
+#     """ read BLOB data from a table """
+#     try:
+#         with conn:
+#             curs = conn.cursor()
+#             curs.execute(f"""
+#                 SELECT orig_filename, file_data
+#                 FROM {table}
+#                 WHERE id = {img_id}
+#             """)
+#
+#             blob = curs.fetchone()
+#             print(path_to_dir + ext)
+#             save_img(blob[1], path_to_dir + blob[0] + ext)
+#     except (Exception, psycopg2.DatabaseError) as error:
+#         print(error)
+#         return False
 
 
 def main():

@@ -20,6 +20,7 @@ exclude_lines =
     def __str__
     def main
     if self\.debug
+    def connect_to_db
 
     # Don't complain if tests don't hit defensive assertion code:
     raise AssertionError
