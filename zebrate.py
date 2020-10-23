@@ -7,7 +7,7 @@ import torch
 from torchvision import transforms
 
 from resnet import ResNetGenerator
-from savedb import truncate, save_to_temp_db, update_prod_db
+from savedb import truncate, save_to_temp_db, update_prod_db, connect_to_db
 from urllib.parse import urlparse
 
 from PIL import Image
@@ -68,7 +68,7 @@ def img_to_bin(im):
     return bin_im
 
 
-def generate_zebra(net_G, preprocess, user_img, user_url, base_url):
+def generate_zebra(net_G, preprocess, user_img, user_url, base_url, db_conn):
     """
     function for generate zebra from horse-tensor
     return image of zebra
@@ -82,9 +82,9 @@ def generate_zebra(net_G, preprocess, user_img, user_url, base_url):
     st.write("We take a random horse :racehorse: (you can load your own in the menu on the left)")
 
     img_bin = img_to_bin(img)
-    truncate(horse_table)
-    save_to_temp_db(img_bin, horse_table)
-    update_prod_db(horse_table)
+    truncate(horse_table, db_conn)
+    save_to_temp_db(img_bin, horse_table, db_conn)
+    update_prod_db(horse_table, db_conn)
 
     # TODO push horse to tg
     st.image(img)
@@ -124,11 +124,12 @@ def main():
     horse_url = validate_url(st.sidebar.text_input("Put the link to the horse picture here: "))
     net, preproc = prepare_model()
     img_file = uploader(st.sidebar.file_uploader("Upload your horse image:", type=FILE_TYPES))
-    zebra = generate_zebra(net, preproc, img_file, horse_url, URL)
+    db_connection = connect_to_db()
+    zebra = generate_zebra(net, preproc, img_file, horse_url, URL, db_connection)
     img_bin = img_to_bin(zebra)
-    truncate(zebra_table)
-    save_to_temp_db(img_bin, zebra_table)
-    update_prod_db(zebra_table)
+    truncate(zebra_table, db_connection)
+    save_to_temp_db(img_bin, zebra_table, db_connection)
+    update_prod_db(zebra_table, db_connection)
     # TODO push zebra to tg
 
     st.write("... and the horse turns into a zebra")
