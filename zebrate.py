@@ -10,19 +10,33 @@ from resnet import ResNetGenerator
 from savedb import truncate, save_to_temp_db, update_prod_db, connect_to_db
 from urllib.parse import urlparse
 
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 from io import BytesIO
-
+from pdf2image import convert_from_bytes
 import base64
 
 st.set_option('deprecation.showfileUploaderEncoding', False)
 st.title("Zebrate app")
 st.header("neural network that turns a horse into a zebra")
 
-FILE_TYPES = ["png", "jpg", "jpeg"]
+FILE_TYPES = ["png", "jpg", "jpeg", "pdf"]
 URL = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flifeglobe.net%2Fmedia%2Fentry%2F6445%2F1a.jpg"
 horse_table = "horse_files"
 zebra_table = "zebra_files"
+
+author = """
+    ---
+    made with:
+    * [Streamlit](https://www.streamlit.io/)
+    * [Book](https://pytorch.org/assets/deep-learning/Deep-Learning-with-PyTorch.pdf)
+    * [PyTorch](https://pytorch.org/)
+    * [CycleGAN](https://github.com/keras-team/keras-io/blob/master/examples/generative/cyclegan.py)
+    * [ResNet](https://www.res.net/)
+    * [weights for model](https://github.com/deep-learning-with-pytorch/dlwpt-code/blob/master/data/p1ch2/horse2zebra_0.4.0.pth)
+    * [and this dataset](http://mng.bz/8pKP)
+    
+    by [Dmitry Kosarevsky](https://github.com/dKosarevsky) for [TaDS labs](https://networking-labs.ru/) in [BMSTU](https://bmstu.ru)
+"""
 
 
 def uploader(file):
@@ -74,10 +88,17 @@ def generate_zebra(net_G, preprocess, user_img, user_url, base_url, db_conn):
     return image of zebra
     """
     if user_img:
-        img = Image.open(user_img)
+        try:
+            img = Image.open(user_img)
+        except UnidentifiedImageError:
+            img = convert_from_bytes(user_img.read(), fmt='jpeg')[0]
     else:
         response = requests.get(user_url if user_url else base_url)
-        img = Image.open(BytesIO(response.content))
+        try:
+            img = Image.open(BytesIO(response.content))
+        except UnidentifiedImageError:
+            st.write('Something went wrong ... Try another link, or upload an image from your local device')
+            st.stop()
 
     st.write("We take a random horse :racehorse: (you can load your own in the menu on the left)")
 
@@ -136,19 +157,7 @@ def main():
 
     st.image(zebra)
 
-    st.sidebar.markdown("""
-        ---
-        made with:
-        * [Streamlit](https://www.streamlit.io/)
-        * [Book](https://pytorch.org/assets/deep-learning/Deep-Learning-with-PyTorch.pdf)
-        * [PyTorch](https://pytorch.org/)
-        * [CycleGAN](https://github.com/keras-team/keras-io/blob/master/examples/generative/cyclegan.py)
-        * [ResNet](https://www.res.net/)
-        * [weights for model](https://github.com/deep-learning-with-pytorch/dlwpt-code/blob/master/data/p1ch2/horse2zebra_0.4.0.pth)
-        * [and this dataset](http://mng.bz/8pKP)
-
-        by [Dmitry Kosarevsky](https://github.com/dKosarevsky) for [TaDS labs](https://networking-labs.ru/) in [BMSTU](https://bmstu.ru)
-    """)
+    st.sidebar.markdown(author)
 
 
 if __name__ == "__main__":

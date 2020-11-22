@@ -7,3 +7,4 @@ pytest-check==0.3.9
 pytest-postgresql==2.5.1
 torch>=1.6.0+cpu
 torchvision>=0.7.0+cpu
+pdf2image==1.14.0

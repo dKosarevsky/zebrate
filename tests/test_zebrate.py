@@ -1,7 +1,10 @@
 import pytest
 import pytest_check as check
 
-from zebrate import validate_url, uploader
+from zebrate import validate_url, uploader, generate_zebra, prepare_model, URL
+from savedb import connect_to_db
+
+from PIL import Image
 
 GOOD_URLS = [
     "https://images.pexels.com/photos/52500/horse-herd-fog-nature-52500.jpeg",  # bad tensor!
@@ -38,11 +41,20 @@ EXTENSIONS_URLS = [
     "https://encrypted-tbn0.gstatic.com/images.{}",
 ]
 
-VALID_EXTENSIONS = ["jpeg", "jpg", "png"]
+VALID_EXTENSIONS = ["jpeg", "jpg", "png", "pdf"]
 
-INVALID_EXTENSIONS = ["pdf", "txt", "mp3"]
+INVALID_EXTENSIONS = ["mpeg4", "txt", "mp3"]
 
 NUMS = [0., 8., 5.5, 100., 999.]
+
+
+def test_generate_zebra():
+    db_connection = connect_to_db()
+    net, preprocess = prepare_model()
+    zebra = generate_zebra(net, preprocess, None, None, URL, db_connection)
+
+    assert type(zebra) == Image.Image
+    assert isinstance(zebra, Image.Image)
 
 
 def test_uploader():
