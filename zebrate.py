@@ -44,7 +44,7 @@ def uploader(file):
     function for upload image from user
     return file object
     """
-    show_file = st.sidebar.empty()
+    show_file = st.empty()
     if not file:
         show_file.info("valid file extension: " + ", ".join(FILE_TYPES))
         return False
@@ -100,7 +100,7 @@ def generate_zebra(net_G, preprocess, user_img, user_url, base_url, db_conn):
             st.write('Something went wrong ... Try another link, or upload an image from your local device')
             st.stop()
 
-    st.write("We take a random horse :racehorse: (you can load your own in the menu on the left)")
+    st.write("We take a random horse :racehorse: ")
 
     img_bin = img_to_bin(img)
     truncate(horse_table, db_conn)
@@ -142,9 +142,9 @@ def validate_url(url):
 
 
 def main():
-    horse_url = validate_url(st.sidebar.text_input("Put the link to the horse picture here: "))
+    horse_url = validate_url(st.text_input("Put the link to the horse picture here: "))
     net, preproc = prepare_model()
-    img_file = uploader(st.sidebar.file_uploader("Upload your horse image:", type=FILE_TYPES))
+    img_file = uploader(st.file_uploader("Upload your horse image:", type=FILE_TYPES))
     db_connection = connect_to_db()
     zebra = generate_zebra(net, preproc, img_file, horse_url, URL, db_connection)
     img_bin = img_to_bin(zebra)
@@ -157,6 +157,7 @@ def main():
 
     st.image(zebra)
 
+    st.sidebar.markdown("# Zebrate")
     st.sidebar.markdown(author)
 
 
