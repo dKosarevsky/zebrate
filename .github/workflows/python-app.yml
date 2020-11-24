@@ -23,8 +23,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: tests DB
-        run: echo $DATABASE_URL!
+#          pip install torch==1.6.0+cpu torchvision==0.7.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+      - name: Set up DB
+        run: echo Set up DB $DATABASE_URL
         env:
             DATABASE_URL: ${{secrets.DATABASE_URL}}
       - name: Test with pytest
