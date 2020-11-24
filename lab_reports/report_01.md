@@ -338,7 +338,7 @@ jobs:
 реквеcта можно ознакомиться на рисунке 6:
 
 <p align="center">
-  <img src="006.png"/>
+  <img src="06.png"/>
 </p>
 
 [Логи](https://github.com/dKosarevsky/zebrate/runs/1450078111?check_suite_focus=true) запуска автоматического pipeline:
