@@ -278,4 +278,93 @@ TOTAL          151      8    95%
 
 ## Автоматизированное тестирование
 
-to be continued...
+**Автоматизированное тестирование** программного обеспечения — часть
+процесса тестирования на этапе контроля качества в процессе разработки
+программного обеспечения. Оно использует программные средства для
+выполнения тестов и проверки результатов выполнения, что помогает сократить
+время тестирования и упростить его процесс.
+
+В данной работе в качестве средства автоматизации процесса
+тестирования используется веб-сервис `Github` и его подсистема `Github Actions`. Для
+того, чтобы подключить процесс автоматического выполнения тестов,
+в корневой папке git репозитория проекта была создана папка `.github`,
+в которой была создана папка `workflows`, внутри которой размещён
+[файл](https://github.com/dKosarevsky/zebrate/blob/master/.github/workflows/python-app.yml) с `python-app.yml` со следующим содержимым:
+```yaml
+name: Python application
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install torch==1.6.0+cpu torchvision==0.7.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+      - name: Test with pytest
+        env:
+          DATABASE_URL: ${{secrets.DATABASE_URL}}
+        run: |
+          python -m pytest --cov-config=.coveragerc --cov --cov-report=html
+      - uses: akhileshns/heroku-deploy@v3.6.8
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: zebrate
+          heroku_email: kosarevsky.d@ya.ru
+```
+В поле `steps` перечисляются последовательности команд, которые будут
+выполняться одна за другой. После создания такого
+конфигурационного файла любое изменение `master` ветки git репозитория или
+создание merge-реквестов из ветки на ветку будет автоматически запускать все
+перечисленные команды в конфигурации. В нашем случае, учитывая что проект
+написан на `Python` и в качестве библиотеки для тестирования используется `pytest`, базовым
+образом был выбрана подсистема на базе ОС `Ubuntu` с последующей установкой 
+`Python` версии `3.8` Для запуска всех тестов используется
+команда `python -m pytest --cov-config=.coveragerc --cov --cov-report=html`.
+С [примером](https://github.com/dKosarevsky/zebrate/actions/runs/381887827) результата автоматического запуска тестов при создании merge 
+реквеcта можно ознакомиться на рисунке 6:
+
+<p align="center">
+  <img src="06.png"/>
+</p>
+
+[Логи](https://github.com/dKosarevsky/zebrate/runs/1450078111?check_suite_focus=true) запуска автоматического pipeline:
+```
+Run python -m pytest --cov-config=.coveragerc --cov --cov-report=html
+============================= test session starts ==============================
+platform linux -- Python 3.8.6, pytest-6.1.1, py-1.9.0, pluggy-0.13.1
+rootdir: /home/runner/work/zebrate/zebrate
+plugins: pytest_check-0.3.9, cov-2.10.1, postgresql-2.5.1
+collected 636 items
+
+tests/test_savedb.py ................................................... [  8%]
+...................................................................      [ 18%]
+tests/test_web.py ....                                                   [ 19%]
+tests/test_zebrate.py .................................................. [ 27%]
+........................................................................ [ 38%]
+........................................................................ [ 49%]
+........................................................................ [ 61%]
+........................................................................ [ 72%]
+........................................................................ [ 83%]
+........................................................................ [ 94%]
+................................                                         [100%]
+
+----------- coverage: platform linux, python 3.8.6-final-0 -----------
+Coverage HTML written to dir htmlcov
+
+
+======================= 636 passed in 133.32s (0:02:13) ========================
+```
