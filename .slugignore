@@ -1,0 +1,5 @@
+/tests
+/lab_reports
+/.pytest_cache
+.coverage
+.coveragerc
