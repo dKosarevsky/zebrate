@@ -9,3 +9,4 @@ pytest-postgresql==2.5.1
 # torchvision>=0.7.0+cpu
 pdf2image==1.14.0
 selenium==3.141.0
+webdriver-manager==3.2.2
