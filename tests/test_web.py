@@ -5,8 +5,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 
-# zebrate_url = "https://zebrate.herokuapp.com/"
-zebrate_url = "http://localhost:8501/"
+zebrate_url = "https://zebrate.herokuapp.com/"
+# zebrate_url = "http://localhost:8501/"
 horse_url = "https://media.istockphoto.com/photos/wild-horses-running-free-picture-id1019461046?k=6&m=1019461046&s=612x612&w=0&h=RN04ILkViwine-g3B9BjtUmGV_mucSiQgv8mKM-F644="
 driver_location = "/home/if/bmstu/011_T_D/zebrate/tests/chromedriver"
 
