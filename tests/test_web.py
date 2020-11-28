@@ -19,11 +19,12 @@ horse_url = "https://media.istockphoto.com/photos/wild-horses-running-free-pictu
 def test_put_image_link():
     driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
     driver.get(zebrate_url)
-    sleep(5)
+    sleep(10)
     link_inputer = driver.find_element(By.TAG_NAME, 'input')
     link_inputer.send_keys(horse_url)  # заполнить
     link_inputer.send_keys(Keys.RETURN)  # отправить
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+    sleep(10)
     driver.close()
 
 
@@ -31,9 +32,10 @@ def test_send_image_file():
     driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
     driver.set_window_size(1600, 900)
     driver.get(zebrate_url)
-    sleep(5)
+    sleep(10)
     upload_file = driver.find_element(By.XPATH, '//button[text()="Browse files"]')
     upload_file.send_keys(os.getcwd() + "/big_horse.jpeg")
+    sleep(10)
     driver.close()
 
 
@@ -46,15 +48,17 @@ def test_download_tensor():
     sleep(10)
     download_tensor = driver.find_element(By.XPATH, '//*[text()="Download tensor"]')
     download_tensor.click()
+    sleep(10)
     driver.close()
 
 
 def test_download_horse():
     driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
     driver.get(zebrate_url)
-    sleep(5)
+    sleep(10)
     download_horse_image = driver.find_element(By.XPATH, '//*[text()="Download horse"]')
     download_horse_image.click()
+    sleep(10)
     driver.close()
 
 
@@ -64,6 +68,7 @@ def test_download_zebra():
     sleep(10)
     download_zebra_image = driver.find_element(By.XPATH, '//*[text()="Download zebra"]')
     download_zebra_image.click()
+    sleep(10)
     driver.close()
 
 
@@ -73,4 +78,5 @@ def test_fullscreen_zebra():
     sleep(10)
     fullscreen_zebra_image = driver.find_elements(By.XPATH, '//*[@title="fullscreen-enter"]')[1]
     fullscreen_zebra_image.click()
+    sleep(10)
     driver.close()
