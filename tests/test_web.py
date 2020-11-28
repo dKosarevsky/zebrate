@@ -8,7 +8,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
-os.environ['DISPLAY'] = ':0'
 chrome_options = Options()
 chrome_options.add_argument("--headless")
 
@@ -37,6 +36,7 @@ def test_put_image_link():
 
 
 def test_send_image_file():
+    os.environ['DISPLAY'] = ':0'
     driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
     driver.get(zebrate_url)
     sleep(5)
