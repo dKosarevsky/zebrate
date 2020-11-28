@@ -82,6 +82,7 @@ def test_rerun_neural_network():
     sleep(5)
     btn = driver.find_element(By.ID, 'MainMenuButton')
     btn.click()
+    sleep(5)
     btn_rerun = driver.find_element(By.XPATH, '//span[text()="Rerun"]')
     btn_rerun.click()
     driver.close()
