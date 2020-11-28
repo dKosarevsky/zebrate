@@ -39,37 +39,37 @@ def test_send_image_file():
     driver.close()
 
 
-def test_download_tensor():
-    driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
-    driver.get(zebrate_url)
-    sleep(10)
-    tensor_checkbox = driver.find_element(By.XPATH, '//*[text()="Show me the horse tensor"]')
-    tensor_checkbox.click()
-    sleep(10)
-    download_tensor = driver.find_element(By.XPATH, '//*[text()="Download tensor"]')
-    download_tensor.click()
-    sleep(10)
-    driver.close()
-
-
-def test_download_horse():
-    driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
-    driver.get(zebrate_url)
-    sleep(10)
-    download_horse_image = driver.find_element(By.XPATH, '//*[text()="Download horse"]')
-    download_horse_image.click()
-    sleep(10)
-    driver.close()
-
-
-def test_download_zebra():
-    driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
-    driver.get(zebrate_url)
-    sleep(10)
-    download_zebra_image = driver.find_element(By.XPATH, '//*[text()="Download zebra"]')
-    download_zebra_image.click()
-    sleep(10)
-    driver.close()
+# def test_download_tensor():
+#     driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+#     driver.get(zebrate_url)
+#     sleep(10)
+#     tensor_checkbox = driver.find_element(By.XPATH, '//*[text()="Show me the horse tensor"]')
+#     tensor_checkbox.click()
+#     sleep(10)
+#     download_tensor = driver.find_element(By.XPATH, '//*[text()="Download tensor"]')
+#     download_tensor.click()
+#     sleep(10)
+#     driver.close()
+#
+#
+# def test_download_horse():
+#     driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+#     driver.get(zebrate_url)
+#     sleep(10)
+#     download_horse_image = driver.find_element(By.XPATH, '//*[text()="Download horse"]')
+#     download_horse_image.click()
+#     sleep(10)
+#     driver.close()
+#
+#
+# def test_download_zebra():
+#     driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+#     driver.get(zebrate_url)
+#     sleep(10)
+#     download_zebra_image = driver.find_element(By.XPATH, '//*[text()="Download zebra"]')
+#     download_zebra_image.click()
+#     sleep(10)
+#     driver.close()
 
 
 def test_fullscreen_zebra():
