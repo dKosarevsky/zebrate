@@ -1,4 +1,6 @@
+import os
 import pytest
+import pyautogui
 from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -33,21 +35,78 @@ def test_put_image_link():
     driver.close()
 
 
-def test_open_menu():
-    driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
-    driver.get(zebrate_url)
-    sleep(5)
-    btn = driver.find_element(By.ID, 'MainMenuButton')
-    btn.click()
-    sleep(5)
-    driver.close()
-
-
-def test_click_browse_files():
+def test_send_image_file():
     driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
     driver.get(zebrate_url)
     sleep(5)
     btn = driver.find_element(By.XPATH, '//button[text()="Browse files"]')
     btn.click()
+    pyautogui.write(os.getcwd()+"/big_horse.jpeg", interval=0.25)
+    pyautogui.press('return')
+    sleep(5)
+    driver.close()
+
+
+def test_click_tensor_checkbox():
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+    driver.get(zebrate_url)
+    sleep(10)
+    tensor_checkbox = driver.find_element(By.XPATH, '//*[text()="Show me the horse tensor"]')
+    tensor_checkbox.click()
+    sleep(5)
+    driver.close()
+
+
+def test_download_tensor():
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+    driver.get(zebrate_url)
+    sleep(10)
+    tensor_checkbox = driver.find_element(By.XPATH, '//*[text()="Show me the horse tensor"]')
+    tensor_checkbox.click()
+    sleep(10)
+    download_tensor = driver.find_element(By.XPATH, '//*[text()="Download tensor"]')
+    download_tensor.click()
+    sleep(5)
+    driver.close()
+
+
+def test_download_horse():
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+    driver.get(zebrate_url)
+    sleep(5)
+    download_horse_image = driver.find_element(By.XPATH, '//*[text()="Download horse"]')
+    download_horse_image.click()
+    sleep(5)
+    driver.close()
+
+
+def test_download_zebra():
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+    driver.get(zebrate_url)
+    sleep(10)
+    download_zebra_image = driver.find_element(By.XPATH, '//*[text()="Download zebra"]')
+    download_zebra_image.click()
+    sleep(5)
+    driver.close()
+
+
+def test_fullscreen_zebra():
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+    driver.get(zebrate_url)
+    sleep(10)
+    fullscreen_zebra_image = driver.find_elements(By.XPATH, '//*[@title="fullscreen-enter"]')[1]
+    fullscreen_zebra_image.click()
+    sleep(5)
+    driver.close()
+
+
+def test_rerun_neural_network():
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+    driver.get(zebrate_url)
+    sleep(5)
+    btn = driver.find_element(By.ID, 'MainMenuButton')
+    btn.click()
+    btn_rerun = driver.find_element(By.XPATH, '//span[text()="Rerun"]')
+    btn_rerun.click()
     sleep(5)
     driver.close()
