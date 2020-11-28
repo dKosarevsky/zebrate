@@ -8,6 +8,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
+os.environ['DISPLAY'] = ':0'
 chrome_options = Options()
 chrome_options.add_argument("--headless")
 
