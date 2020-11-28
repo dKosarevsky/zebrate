@@ -43,15 +43,6 @@ def test_send_image_file():
     driver.close()
 
 
-def test_click_tensor_checkbox():
-    driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
-    driver.get(zebrate_url)
-    sleep(10)
-    tensor_checkbox = driver.find_element(By.XPATH, '//*[text()="Show me the horse tensor"]')
-    tensor_checkbox.click()
-    driver.close()
-
-
 def test_download_tensor():
     driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
     driver.get(zebrate_url)
