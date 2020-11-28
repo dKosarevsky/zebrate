@@ -1,10 +1,22 @@
-import pytest
 import pytest_check as check
-
-from zebrate import validate_url, uploader, generate_zebra, prepare_model, URL
-from savedb import connect_to_db
-
 from PIL import Image
+import pandas as pd
+import numpy as np
+import pytest
+import torch
+
+from savedb import connect_to_db
+from PIL import Image
+from zebrate import (
+    get_table_download_link,
+    get_image_download_link,
+    generate_zebra,
+    prepare_model,
+    validate_url,
+    to_excel,
+    uploader,
+    URL,
+)
 
 GOOD_URLS = [
     "https://images.pexels.com/photos/52500/horse-herd-fog-nature-52500.jpeg",  # bad tensor!
@@ -83,6 +95,37 @@ def test_valid_extension(valid_extension, extension_url):
 
 def test_invalid_extension(invalid_extension, valid_extension, extension_url):
     check.is_not_in(invalid_extension, extension_url.format(valid_extension), "Is extension NOT in url")
+
+
+def test_to_excel():
+    d = {'col1': [1, 2], 'col2': [3, 4]}
+    df = pd.DataFrame(data=d)
+    res = to_excel(df)
+    check.is_instance(res, (bytes, bytearray))
+
+
+def test_get_table_download_link():
+    # Create a 3D tensor of size 2x2x2.
+    T_data = [[[1., 2.], [3., 4.]],
+              [[5., 6.], [7., 8.]]]
+    T = torch.tensor(T_data)
+    res = get_table_download_link(T)
+    check.is_in("href", res)
+    check.is_in("horse_tensor.xlsx", res)
+    check.is_instance(res, str)
+
+
+def test_get_image_download_link():
+    imarray = np.random.rand(100, 100, 3) * 255
+    random_image = Image.fromarray(imarray.astype('uint8'))
+    horse_link = get_image_download_link(random_image)
+    zebra_link = get_image_download_link(random_image, is_zebra=True)
+    check.is_instance(horse_link, str)
+    check.is_instance(zebra_link, str)
+    check.is_in("href", horse_link)
+    check.is_in("horse", horse_link)
+    check.is_in("href", zebra_link)
+    check.is_in("zebra", zebra_link)
 
 
 @pytest.fixture(params=GOOD_URLS)

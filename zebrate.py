@@ -1,19 +1,18 @@
 import streamlit as st
-
+import pandas as pd
+import numpy as np
 import requests
-
+import base64
 import torch
+import os
 
 from torchvision import transforms
-
 from resnet import ResNetGenerator
 from savedb import truncate, save_to_temp_db, update_prod_db, connect_to_db
 from urllib.parse import urlparse
-
 from PIL import Image, UnidentifiedImageError
 from io import BytesIO
 from pdf2image import convert_from_bytes
-import base64
 
 st.set_option('deprecation.showfileUploaderEncoding', False)
 st.title("Zebrate app")
@@ -37,6 +36,40 @@ author = """
     
     by [Dmitry Kosarevsky](https://github.com/dKosarevsky) for [TaDS labs](https://networking-labs.ru/) in [BMSTU](https://bmstu.ru)
 """
+
+
+def to_excel(df):
+    output = BytesIO()
+    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+    df.to_excel(writer, sheet_name='Sheet1')
+    writer.save()
+    processed_data = output.getvalue()
+    return processed_data
+
+
+def get_table_download_link(tensor):
+    """Generates a link allowing the data in a given panda dataframe to be downloaded
+    in:  dataframe
+    out: href string
+    """
+    tensor_np = tensor.numpy()
+    df = pd.concat([pd.DataFrame(x) for x in tensor_np], keys=np.arange(tensor_np.shape[2]))
+    val = to_excel(df)
+    b64 = base64.b64encode(val)  # val looks like b'...'
+    return f'<a href="data:application/octet-stream;base64,{b64.decode()}" download="horse_tensor.xlsx">Download tensor</a>' # decode b'abc' => abc
+
+
+def get_image_download_link(img, is_zebra=False):
+    """Generates a link allowing the PIL image to be downloaded
+    in:  PIL image
+    out: href string
+    """
+    buffered = BytesIO()
+    img.save(buffered, format="JPEG")
+    img_str = base64.b64encode(buffered.getvalue()).decode()
+    subgenus = "zebra" if is_zebra else "horse"
+    href = f'<a href="data:file/jpg;base64,{img_str}">Download {subgenus}</a>'
+    return href
 
 
 def uploader(file):
@@ -109,6 +142,7 @@ def generate_zebra(net_G, preprocess, user_img, user_url, base_url, db_conn):
 
     # TODO push horse to tg
     st.image(img)
+    st.markdown(get_image_download_link(img), unsafe_allow_html=True)
 
     img_t = preprocess(img)
     batch_t = torch.unsqueeze(img_t, 0)
@@ -121,6 +155,7 @@ def generate_zebra(net_G, preprocess, user_img, user_url, base_url, db_conn):
     st.write("We drive the horse into tensor ... it's not a stall :grin:, it's such a multidimensional matrix")
     if st.checkbox("Show me the horse tensor"):
         st.code(img_t)
+        st.markdown(get_table_download_link(img_t), unsafe_allow_html=True)
 
     st.write("Then there is a battle of generative adversarial networks ...")
 
@@ -156,6 +191,7 @@ def main():
     st.write("... and the horse turns into a zebra")
 
     st.image(zebra)
+    st.markdown(get_image_download_link(zebra, is_zebra=True), unsafe_allow_html=True)
 
     st.sidebar.markdown("# Zebrate")
     st.sidebar.markdown(author)
