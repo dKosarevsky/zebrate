@@ -74,15 +74,3 @@ def test_fullscreen_zebra():
     fullscreen_zebra_image = driver.find_elements(By.XPATH, '//*[@title="fullscreen-enter"]')[1]
     fullscreen_zebra_image.click()
     driver.close()
-
-
-def test_rerun_neural_network():
-    driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
-    driver.get(zebrate_url)
-    sleep(5)
-    btn = driver.find_element(By.ID, 'MainMenuButton')
-    btn.click()
-    sleep(5)
-    btn_rerun = driver.find_element(By.XPATH, '//span[text()="Rerun"]')
-    btn_rerun.click()
-    driver.close()
