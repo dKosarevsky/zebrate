@@ -1,3 +1,5 @@
 .idea
 /local_runner.sh
 htmlcov
+/download
+/horse_tensor.xlsx

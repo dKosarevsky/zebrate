@@ -1,16 +1,12 @@
 import os
 import pytest
-import pyautogui
-import Xlib.display
 from time import sleep
 from selenium import webdriver
-from pyvirtualdisplay import Display
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
-display = Display(visible=1, size=(1600, 900))
 
 chrome_options = Options()
 chrome_options.add_argument("--headless")
@@ -40,21 +36,14 @@ def test_put_image_link():
 
 
 def test_send_image_file():
-    display.start()
-    pyautogui._pyautogui_x11._display = Xlib.display.Display(
-        os.environ['DISPLAY']
-    )
     driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
     driver.set_window_size(1600, 900)
     driver.get(zebrate_url)
     sleep(5)
-    btn = driver.find_element(By.XPATH, '//button[text()="Browse files"]')
-    btn.click()
-    pyautogui.write(os.getcwd() + "/big_horse.jpeg", interval=0.25)
-    pyautogui.press('return')
+    upload_file = driver.find_element(By.XPATH, '//button[text()="Browse files"]')
+    upload_file.send_keys(os.getcwd() + "/big_horse.jpeg")
     sleep(5)
     driver.close()
-    display.stop()
 
 
 def test_click_tensor_checkbox():
