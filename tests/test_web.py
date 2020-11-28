@@ -15,8 +15,8 @@ display = Display(visible=1, size=(1600, 900))
 chrome_options = Options()
 chrome_options.add_argument("--headless")
 
-# zebrate_url = "https://zebrate.herokuapp.com/"
-zebrate_url = "http://localhost:8501/"
+zebrate_url = "https://zebrate.herokuapp.com/"
+# zebrate_url = "http://localhost:8501/"
 horse_url = "https://media.istockphoto.com/photos/wild-horses-running-free-picture-id1019461046?k=6&m=1019461046&s=612x612&w=0&h=RN04ILkViwine-g3B9BjtUmGV_mucSiQgv8mKM-F644="
 
 
