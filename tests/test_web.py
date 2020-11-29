@@ -28,17 +28,17 @@ def test_put_image_link():
     driver.close()
 
 
-# def test_send_image_file():
-#     driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
-#     driver.set_window_size(1600, 900)
-#     driver.get(zebrate_url)
-#     sleep(10)
-#     upload_file = driver.find_element(By.XPATH, '//button[text()="Browse files"]')
-#     upload_file.send_keys(os.getcwd() + "/big_horse.jpeg")
-#     sleep(10)
-#     driver.close()
-#
-#
+def test_send_image_file():
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+    driver.set_window_size(1600, 900)
+    driver.get(zebrate_url)
+    sleep(10)
+    upload_file = driver.find_element(By.XPATH, '//button[text()="Browse files"]')
+    upload_file.send_keys(os.getcwd() + "/big_horse.jpeg")
+    sleep(10)
+    driver.close()
+
+
 # def test_download_tensor():
 #     driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
 #     driver.get(zebrate_url)
